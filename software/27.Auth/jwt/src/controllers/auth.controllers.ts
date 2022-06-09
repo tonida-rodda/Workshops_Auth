@@ -1,16 +1,24 @@
-import { Request, Response } from "express";
-import User, { userDto } from '../models/User'
+import express from 'express';
 import jwt from 'jsonwebtoken';
+import User, { userDto } from '../models/User';
 
 //check class in ts
 //check microservice db
 //app evenementiel
 
-export const signup = async (request: Request, response: Response) => {
+export const signup = async (request: express.Request, response: express.Response) => {
+    const username: string | undefined = request.body.username
+    const email: string | undefined = request.body.email
+    const password: string | undefined = request.body.password
+
+    if (username === undefined || email === undefined || password === undefined) {
+        response.status(400).json({ msg: "Bad parameters"} )
+    }
+
     const user: userDto = new User({
-        username: request.body.username,
-        email: request.body.email,
-        password: request.body.password
+        username: username,
+        email: email,
+        password: password
     });
     user.password = await user.encryptPassword(user.password);
     const saveUser: userDto = await user.save();
@@ -18,7 +26,7 @@ export const signup = async (request: Request, response: Response) => {
     response.header('auth-token', token).json(saveUser);
 };
 
-export const signin = async (request: Request, response: Response) => {
+export const signin = async (request: express.Request, response: express.Response) => {
     const user = await User.findOne({ email: request.body.email });
     if (!user) 
         return response.status(400).json('incorrect email');
@@ -34,7 +42,7 @@ export const signin = async (request: Request, response: Response) => {
     response.header('auth-token', token).json(user);
 };
 
-export const profile = (request: Request, response: Response) => {
+export const profile = (request: express.Request, response: express.Response) => {
     response.send('profile');
 };
 

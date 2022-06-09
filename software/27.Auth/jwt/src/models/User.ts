@@ -36,7 +36,7 @@ const userSchema = new Schema<userDto>({
 });
 
 userSchema.methods.encryptPassword = async (password: string): Promise<string> => { // check schema
-    const encrypted = await bcrypt.genSalt(10);
+    const encrypted: string = await bcrypt.genSalt(10);
     return bcrypt.hash(password, encrypted);
 }
 

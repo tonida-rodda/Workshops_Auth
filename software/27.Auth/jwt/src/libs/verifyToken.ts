@@ -1,9 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
-
-import { Itoken } from '../models/User';
-
 import jwt from 'jsonwebtoken'
-
+import { Request, Response, NextFunction } from 'express'
+import { Itoken } from '../models/User';
 
 export const tokenValidation = (request: Request, response: Response, next: NextFunction) => {
 
@@ -13,4 +10,4 @@ export const tokenValidation = (request: Request, response: Response, next: Next
     const tokenChecker = jwt.verify(token, process.env.TOKEN || 'tokentest') as Itoken;
     console.log(tokenChecker);
     next();
-}; 
+};

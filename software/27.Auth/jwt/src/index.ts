@@ -1,13 +1,11 @@
-import app from './app'
-import './database'
+import dotenv  from 'dotenv';
+import app from './app';
+import { connectDatabase } from "./database";
 
-require('dotenv').config()
+dotenv.config();
 const port = process.env.PORT;
 
-function main() {
-    app.listen(port, () => {
-        console.log(`Express is listening at http://localhost:${port}`);
-    });
-}
-
-main();
+connectDatabase();
+app.listen(port, () => {
+    console.log(`Express is listening at http://localhost:${port}`);
+});
